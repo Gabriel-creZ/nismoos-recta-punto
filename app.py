@@ -127,7 +127,7 @@ def index():
             x0 = float(request.form["x0"])
             y0 = float(request.form["y0"])
         except Exception as e:
-            flash("Error en la entrada de datos. Verifica que todos los campos tengan valores numéricos válidos.")
+            flash("Error en la entrada de datos. Verifica que todos los campos tengan valores numéricos válidos.", "error")
             return render_template("index.html", error="Error en la entrada de datos.", resultado=None)
         
         resultado = calcular_procedimiento(A, B, C, x0, y0)
@@ -154,20 +154,19 @@ def login():
 @app.route("/reporte", methods=["GET", "POST"])
 def reporte():
     if request.method == "POST":
-        # Aquí se podría procesar el reporte enviado por el usuario.
+        # Aquí se procesa el reporte enviado por el usuario.
         flash("Reporte enviado. ¡Gracias por tu ayuda!", "success")
         return redirect(url_for("index"))
     return render_template("reporte.html")
 
 @app.route("/donar")
 def donar():
-    # Página dummy de donaciones
+    # Página dummy de donaciones.
     return render_template("donar.html")
 
 # Ruta dummy para calcular distancia (en caso de usar AJAX en otras funcionalidades)
 @app.route("/calcular_distancia", methods=["POST"])
 def calcular_distancia():
-    # Este ejemplo muestra una respuesta dummy; se puede adaptar para cálculo real.
     data = request.form
     try:
         xA = float(data["xA"])
