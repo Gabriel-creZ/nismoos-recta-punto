@@ -11,7 +11,7 @@
 <body>
   <div class="container">
     <div class="label-image-container">
-      <img src="{{ url_for('static','images/label-image.png') }}" alt="Logo" class="label-image">
+      <img src="{{ url_for('static', filename='images/label-image.png') }}" alt="Logo" class="label-image">
     </div>
     <header class="header">
       <h1><i class="fas fa-ruler"></i> Instant Math Solver <i class="fas fa-ruler"></i></h1>
@@ -122,31 +122,30 @@
         groups[r.value].forEach(id=>document.getElementById(id).style.display='flex');
       };
     });
-    // inicial
-    radios[1].checked=true;
+    radios[1].checked = true;
     radios[1].dispatchEvent(new Event('change'));
 
-    // AJAX Solve
-    document.getElementById('solve-form').onsubmit = async e=>{
+    // AJAX para resolver
+    document.getElementById('solve-form').onsubmit = async e => {
       e.preventDefault();
       const data = new FormData(e.target);
       const modo = data.get('modo');
-      const url = modo==='punto-recta'?'/api/recta-punto':'/api/solve';
-      const res = await fetch(url,{method:'POST',body:data});
+      const url = modo === 'punto-recta' ? '/api/recta-punto' : '/api/solve';
+      const res = await fetch(url, { method: 'POST', body: data });
       const json = await res.json();
       document.getElementById('solve-result').innerHTML = json.html;
     };
 
     // AJAX Reporte
-    document.getElementById('report-form').onsubmit = async e=>{
+    document.getElementById('report-form').onsubmit = async e => {
       e.preventDefault();
       const data = new FormData(e.target);
-      const res = await fetch('/api/reporte',{method:'POST',body:data});
-      const {success,message} = await res.json();
+      const res = await fetch('/api/reporte', { method: 'POST', body: data });
+      const { success, message } = await res.json();
       const box = document.getElementById('report-message');
-      box.style.display='block';
+      box.style.display = 'block';
       box.textContent = message;
-      box.className = success?'success-message':'error-message';
+      box.className = success ? 'success-message' : 'error-message';
     };
   </script>
 </body>
