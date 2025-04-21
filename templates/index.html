@@ -2,64 +2,152 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instant Math Solver: Distancia de una Recta a un Punto</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Instant Math Solver - SPA de Rectas</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=1.1">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <div class="container">
     <div class="label-image-container">
-      <a href="https://bachantoniomadna.milaulas.com" target="_blank">
-        <img src="{{ url_for('static', filename='images/label-image.png') }}" alt="Logo Instant Math Solver" class="label-image">
-      </a>
+      <img src="{{ url_for('static','images/label-image.png') }}" alt="Logo" class="label-image">
     </div>
     <header class="header">
-      <h1><i class="fas fa-chart-line"></i> Instant Math Solver: Distancia de una Recta a un Punto <i class="fas fa-chart-line"></i></h1>
+      <h1><i class="fas fa-ruler"></i> Instant Math Solver <i class="fas fa-ruler"></i></h1>
       <p class="creator">By: <em>gabriel_cre</em></p>
     </header>
-    {% if error %}
-      <div class="error-message">
-        <p><i class="fas fa-exclamation-circle"></i> {{ error }}</p>
-      </div>
-    {% endif %}
-    <div class="content">
-      <div class="form-container">
-        <h2 class="form-title"><i class="fas fa-calculator"></i> Ingrese los parámetros</h2>
-        <form method="POST">
-          <div class="form-group">
-            <label for="A"><i class="fas fa-slash"></i> Coeficiente A:</label>
-            <input type="number" name="A" id="A" step="any" placeholder="Valor de A" required>
-          </div>
-          <div class="form-group">
-            <label for="B"><i class="fas fa-slash"></i> Coeficiente B:</label>
-            <input type="number" name="B" id="B" step="any" placeholder="Valor de B" required>
-          </div>
-          <div class="form-group">
-            <label for="C"><i class="fas fa-slash"></i> Coeficiente C:</label>
-            <input type="number" name="C" id="C" step="any" placeholder="Valor de C" required>
-          </div>
-          <div class="form-group">
-            <label for="x0"><i class="fas fa-crosshairs"></i> Coordenada x₀:</label>
-            <input type="number" name="x0" id="x0" step="any" placeholder="x₀" required>
-          </div>
-          <div class="form-group">
-            <label for="y0"><i class="fas fa-crosshairs"></i> Coordenada y₀:</label>
-            <input type="number" name="y0" id="y0" step="any" placeholder="y₀" required>
-          </div>
-          <button type="submit" class="btn"><i class="fas fa-calculator"></i> Calcular</button>
-        </form>
-        <div class="equation-link">
-          <a href="https://resolucion-rectas-nismoos.onrender.com" target="_blank">
-            <i class="fas fa-external-link-alt"></i> Resolver otras ecuaciones
-          </a>
+
+    <!-- Nav SPA -->
+    <nav class="form-group" style="text-align:center;margin-bottom:20px;">
+      <button class="btn nav-btn" data-target="login-section">Login</button>
+      <button class="btn nav-btn" data-target="solve-section">Resolver Rectas</button>
+      <button class="btn nav-btn" data-target="report-section">Reportar</button>
+      <button class="btn nav-btn" data-target="donate-section">Donar</button>
+    </nav>
+
+    <!-- Login -->
+    <section id="login-section" class="spa-section">
+      <h2 class="form-title"><i class="fas fa-sign-in-alt"></i> Ingreso</h2>
+      <form id="login-form">
+        <div class="form-group"><label>Usuario:</label><input type="text" name="username" required></div>
+        <div class="form-group"><label>Contraseña:</label><input type="password" name="password" required></div>
+        <button type="submit" class="btn">Ingresar</button>
+      </form>
+      <div id="login-message" class="error-message" style="display:none;"></div>
+    </section>
+
+    <!-- Resolver -->
+    <section id="solve-section" class="spa-section" style="display:none;">
+      <h2 class="form-title"><i class="fas fa-calculator"></i> Resolver Rectas</h2>
+      <form id="solve-form">
+        <div class="form-group">
+          <label><strong>Modo:</strong></label><br>
+          <label><input type="radio" name="modo" value="una"> 1 Ecuación</label>
+          <label><input type="radio" name="modo" value="dos" checked> 2 Ecuaciones</label>
+          <label><input type="radio" name="modo" value="tres"> 3 Ecuaciones</label>
+          <label><input type="radio" name="modo" value="punto-recta"> Recta‑Punto</label>
         </div>
-      </div>
-    </div>
-    <div class="footer">
-      <em>@ 2025 Instant Math Solver - Herramienta educativa desarrollada por Gabriel Castillo - Alumno AMRD</em>
-    </div>
+
+        <!-- Inputs agrupados -->
+        <div id="inputs-una" class="inputs-group">
+          <div class="form-group"><label>a₁:</label><input type="number" step="any" name="a1"></div>
+          <div class="form-group"><label>b₁:</label><input type="number" step="any" name="b1"></div>
+          <div class="form-group"><label>c₁:</label><input type="number" step="any" name="c1"></div>
+        </div>
+        <div id="inputs-dos" class="inputs-group">
+          <div class="form-group"><label>a₂:</label><input type="number" step="any" name="a2"></div>
+          <div class="form-group"><label>b₂:</label><input type="number" step="any" name="b2"></div>
+          <div class="form-group"><label>c₂:</label><input type="number" step="any" name="c2"></div>
+        </div>
+        <div id="inputs-tres" class="inputs-group">
+          <div class="form-group"><label>a₃:</label><input type="number" step="any" name="a3"></div>
+          <div class="form-group"><label>b₃:</label><input type="number" step="any" name="b3"></div>
+          <div class="form-group"><label>c₃:</label><input type="number" step="any" name="c3"></div>
+        </div>
+        <div id="inputs-punto-recta" class="inputs-group">
+          <div class="form-group"><label>x₀:</label><input type="number" step="any" name="x0"></div>
+          <div class="form-group"><label>y₀:</label><input type="number" step="any" name="y0"></div>
+          <div class="form-group"><label>m:</label><input type="number" step="any" name="m"></div>
+        </div>
+
+        <button type="submit" class="btn">Calcular</button>
+      </form>
+      <div id="solve-result" class="results-container" style="margin-top:20px;"></div>
+    </section>
+
+    <!-- Reporte -->
+    <section id="report-section" class="spa-section" style="display:none;">
+      <h2 class="form-title"><i class="fas fa-bug"></i> Reportar Error</h2>
+      <form id="report-form">
+        <div class="form-group"><label>Tu correo:</label><input type="email" name="email" required></div>
+        <div class="form-group"><label>Mensaje:</label><textarea name="mensaje" rows="4" required></textarea></div>
+        <button type="submit" class="btn">Enviar Reporte</button>
+      </form>
+      <div id="report-message" class="error-message" style="display:none;"></div>
+    </section>
+
+    <!-- Donar -->
+    <section id="donate-section" class="spa-section" style="display:none;">
+      <h2 class="form-title"><i class="fas fa-donate"></i> Donaciones</h2>
+      <p>Apoya el desarrollo en:</p>
+      <a href="https://paypal.me/gabrielcreZ?country.x=MX&locale.x=es_XC" target="_blank" class="btn">PayPal</a>
+    </section>
+
+    <footer class="footer">
+      <em>@ 2025 Instant Math Solver - Gabriel Castillo</em>
+    </footer>
   </div>
+
+  <script>
+    // Navegación interna
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      b.onclick = () => {
+        document.querySelectorAll('.spa-section').forEach(s => s.style.display='none');
+        document.getElementById(b.dataset.target).style.display='block';
+      };
+    });
+
+    // Mostrar/ocultar inputs por modo
+    const radios = document.getElementsByName('modo');
+    const groups = {
+      una: ['inputs-una'],
+      dos: ['inputs-una','inputs-dos'],
+      tres: ['inputs-una','inputs-dos','inputs-tres'],
+      'punto-recta': ['inputs-punto-recta']
+    };
+    radios.forEach(r=>{
+      r.onchange = ()=>{
+        Object.values(groups).flat().forEach(id=>document.getElementById(id).style.display='none');
+        groups[r.value].forEach(id=>document.getElementById(id).style.display='flex');
+      };
+    });
+    // inicial
+    radios[1].checked=true;
+    radios[1].dispatchEvent(new Event('change'));
+
+    // AJAX Solve
+    document.getElementById('solve-form').onsubmit = async e=>{
+      e.preventDefault();
+      const data = new FormData(e.target);
+      const modo = data.get('modo');
+      const url = modo==='punto-recta'?'/api/recta-punto':'/api/solve';
+      const res = await fetch(url,{method:'POST',body:data});
+      const json = await res.json();
+      document.getElementById('solve-result').innerHTML = json.html;
+    };
+
+    // AJAX Reporte
+    document.getElementById('report-form').onsubmit = async e=>{
+      e.preventDefault();
+      const data = new FormData(e.target);
+      const res = await fetch('/api/reporte',{method:'POST',body:data});
+      const {success,message} = await res.json();
+      const box = document.getElementById('report-message');
+      box.style.display='block';
+      box.textContent = message;
+      box.className = success?'success-message':'error-message';
+    };
+  </script>
 </body>
 </html>

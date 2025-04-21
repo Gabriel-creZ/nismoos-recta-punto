@@ -1,0 +1,87 @@
+{% if modo == "dos" %}
+  {% if resultado.tipo=="interseccion" %}
+    <h2 class="results-title">✅ Punto de intersección: ({{resultado.punto[0]|round(2)}}, {{resultado.punto[1]|round(2)}})</h2>
+    {% if distancia_interseccion %}
+      <p class="result-item">Distancia al origen: {{distancia_interseccion}}</p>
+    {% endif %}
+  {% elif resultado.tipo=="paralelas" %}
+    <h2 class="results-title">❌ Rectas paralelas.</h2>
+  {% elif resultado.tipo=="coincidentes" %}
+    <h2 class="results-title">⭐ Rectas coincidentes.</h2>
+  {% endif %}
+  <div class="result-item">
+    <h3>Datos Recta 1</h3>
+    <p>✴️ Pendiente: {{datos1.pendiente if datos1.pendiente is not none else "Vertical"}}</p>
+    <p>🔸 X: {{datos1.interseccionX}}</p>
+    <p>🔹 Y: {{datos1.interseccionY}}</p>
+    <p>📐 Ángulo: {{datos1.anguloConEjeX}}°</p>
+    <p>📏 Dist. al origen: {{datos1.distanciaAlOrigen}}</p>
+  </div>
+  <div class="result-item">
+    <h3>Datos Recta 2</h3>
+    <p>✴️ Pendiente: {{datos2.pendiente if datos2.pendiente is not none else "Vertical"}}</p>
+    <p>🔸 X: {{datos2.interseccionX}}</p>
+    <p>🔹 Y: {{datos2.interseccionY}}</p>
+    <p>📐 Ángulo: {{datos2.anguloConEjeX}}°</p>
+    <p>📏 Dist. al origen: {{datos2.distanciaAlOrigen}}</p>
+  </div>
+  <div class="result-item">
+    <p>{{comp_pendiente}}</p>
+    <p>{{comp_inclinacion}}</p>
+    <p>📏 Ángulo entre: {{angulo_entre}}°</p>
+  </div>
+  <div class="result-item">
+    <h3><i class="fas fa-chart-pie"></i> Gráfica Estática</h3>
+    <img src="data:image/png;base64,{{grafico_estatico}}" class="triangle-image">
+  </div>
+  <div class="result-item">
+    <h3><i class="fas fa-chart-line"></i> Gráfica Interactiva</h3>
+    {{grafico_interactivo|safe}}
+  </div>
+
+{% elif modo == "una" %}
+  <h2 class="results-title">✅ Gráfica de la Recta</h2>
+  <div class="result-item">
+    <h3>Datos</h3>
+    <p>✴️ Pendiente: {{datos1.pendiente if datos1.pendiente is not none else "Vertical"}}</p>
+    <p>🔸 X: {{datos1.interseccionX}}</p>
+    <p>🔹 Y: {{datos1.interseccionY}}</p>
+    <p>📐 Ángulo: {{datos1.anguloConEjeX}}°</p>
+    <p>📏 Dist. al origen: {{datos1.distanciaAlOrigen}}</p>
+  </div>
+  <div class="result-item">
+    <h3><i class="fas fa-chart-pie"></i> Estática</h3>
+    <img src="data:image/png;base64,{{grafico_estatico}}" class="triangle-image">
+  </div>
+  <div class="result-item">
+    <h3><i class="fas fa-chart-line"></i> Interactiva</h3>
+    {{grafico_interactivo|safe}}
+  </div>
+
+{% elif modo == "tres" %}
+  <h2 class="results-title">✅ Tres Rectas</h2>
+  {% for i,datos in [(1,datos1),(2,datos2),(3,datos3)] %}
+    <div class="result-item">
+      <h3>Datos Recta {{i}}</h3>
+      <p>✴️ Pendiente: {{datos.pendiente if datos.pendiente is not none else "Vertical"}}</p>
+      <p>🔸 X: {{datos.interseccionX}}</p>
+      <p>🔹 Y: {{datos.interseccionY}}</p>
+      <p>📐 Ángulo: {{datos.anguloConEjeX}}°</p>
+      <p>📏 Dist. al origen: {{datos.distanciaAlOrigen}}</p>
+    </div>
+  {% endfor %}
+  <div class="result-item">
+    <h3>Puntos de Intersección</h3>
+    {% for key,pt in intersecciones.items() %}
+      <p>{{key}}: ({{pt[0]|round(2)}},{{pt[1]|round(2)}})</p>
+    {% endfor %}
+  </div>
+  <div class="result-item">
+    <h3><i class="fas fa-chart-pie"></i> Estática</h3>
+    <img src="data:image/png;base64,{{grafico_estatico}}" class="triangle-image">
+  </div>
+  <div class="result-item">
+    <h3><i class="fas fa-chart-line"></i> Interactiva</h3>
+    {{grafico_interactivo|safe}}
+  </div>
+{% endif %}
